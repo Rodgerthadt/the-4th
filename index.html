@@ -3,16 +3,75 @@
   <head>
     <title>Mars Game</title>
     <style>
-      #player {
-        position: absolute;
-        width: 50px;
-        height: 50px;
-        background-color: red;
+      canvas {
+        border: 1px solid black;
       }
     </style>
   </head>
   <body>
-    <div id="player"></div>
-    <script src="mars-game.js"></script>
+    <canvas id="game-canvas" width="400" height="400"></canvas>
+    <script>
+      // get canvas element
+      const canvas = document.getElementById("game-canvas");
+
+      // set canvas context
+      const ctx = canvas.getContext("2d");
+
+      // set initial player position
+      let playerX = 200;
+      let playerY = 200;
+
+      // set player speed
+      const playerSpeed = 5;
+
+      // handle player movement
+      function handlePlayerMovement() {
+        if (keys.ArrowUp) {
+          playerY -= playerSpeed;
+        }
+        if (keys.ArrowDown) {
+          playerY += playerSpeed;
+        }
+        if (keys.ArrowLeft) {
+          playerX -= playerSpeed;
+        }
+        if (keys.ArrowRight) {
+          playerX += playerSpeed;
+        }
+      }
+
+      // draw player on canvas
+      function drawPlayer() {
+        ctx.fillStyle = "red";
+        ctx.fillRect(playerX, playerY, 20, 20);
+      }
+
+      // handle key press events
+      const keys = {};
+      document.addEventListener("keydown", (e) => {
+        keys[e.code] = true;
+      });
+      document.addEventListener("keyup", (e) => {
+        keys[e.code] = false;
+      });
+
+      // main game loop
+      function gameLoop() {
+        // clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // handle player movement
+        handlePlayerMovement();
+
+        // draw player
+        drawPlayer();
+
+        // request next frame
+        requestAnimationFrame(gameLoop);
+      }
+
+      // start game loop
+      requestAnimationFrame(gameLoop);
+    </script>
   </body>
 </html>
